@@ -19,8 +19,21 @@ class ExampleViewController: UIViewController {
         let segmentedControl = HMSegmentedControl(sectionTitles: [
             "Trending",
             "News",
-            "Library"
+            "Library",
         ])
+        
+        segmentedControl.segmentWidthStyle = .specifed
+        segmentedControl.segmentSpecifedWidth = UIScreen.main.bounds.width / 3.0
+        segmentedControl.selectionStyle = .specifedWidthStripe
+        segmentedControl.selectionIndicatorSpecifedWidth = 50
+        segmentedControl.selectionIndicatorLocation = .bottom
+        segmentedControl.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.gray
+        ]
+        
+        segmentedControl.selectedTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
         
         segmentedControl.frame = CGRect(x: 0, y: 80, width: viewWidth, height: 40)
         segmentedControl.autoresizingMask = [.flexibleRightMargin, .flexibleWidth]

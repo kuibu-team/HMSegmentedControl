@@ -151,6 +151,7 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
     self.opaque = NO;
     _selectionIndicatorColor = [UIColor colorWithRed:52.0f/255.0f green:181.0f/255.0f blue:229.0f/255.0f alpha:1.0f];
     _selectionIndicatorBoxColor = _selectionIndicatorColor;
+    _selectionIndicatorSpecifedWidth = 100;
 
     self.selectedSegmentIndex = 0;
     self.segmentEdgeInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -331,7 +332,7 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
 
             CGFloat y = roundf((CGRectGetHeight(self.frame) - selectionStyleNotBox * self.selectionIndicatorHeight) / 2 - stringHeight / 2 + self.selectionIndicatorHeight * locationUp);
             CGRect rect;
-            if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed) {
+            if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed || self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleSpecifed) {
                 rect = CGRectMake((self.segmentWidth * idx) + (self.segmentWidth - stringWidth) / 2, y, stringWidth, stringHeight);
                 rectDiv = CGRectMake((self.segmentWidth * idx) - (self.verticalDividerWidth / 2), self.selectionIndicatorHeight * 2, self.verticalDividerWidth, self.frame.size.height - (self.selectionIndicatorHeight * 4));
                 fullRect = CGRectMake(self.segmentWidth * idx, 0, self.segmentWidth, oldRect.size.height);
@@ -736,6 +737,7 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
             CGFloat x = ((widthToEndOfSelectedSegment - widthToStartOfSelectedIndex) / 2) + (widthToStartOfSelectedIndex - sectionWidth / 2);
             return CGRectMake(x + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, sectionWidth - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight);
         } else {
+                                    
             if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
                 CGFloat selectedSegmentOffset = 0.0f;
                 
@@ -746,14 +748,24 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
                     selectedSegmentOffset = selectedSegmentOffset + [width floatValue];
                     i++;
                 }
+                
                 if (self.selectionStyle == HMSegmentedControlSelectionStyleTextWidthStripe) {
                    return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left + self.segmentEdgeInset.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right - self.segmentEdgeInset.left - self.segmentEdgeInset.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
-                } else {
-                    return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
                 }
+                    
+                if (self.selectionStyle == HMSegmentedControlSelectionStyleSpecifedWidthStripe) {
+                    CGFloat segmentWidth = [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue];
+                    return CGRectMake(selectedSegmentOffset + (segmentWidth - self.selectionIndicatorSpecifedWidth)/2.0, indicatorYOffset, self.selectionIndicatorSpecifedWidth, self.selectionIndicatorHeight);
+                }
+                
+                return CGRectMake(selectedSegmentOffset + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, [[self.segmentWidthsArray objectAtIndex:self.selectedSegmentIndex] floatValue] - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight + self.selectionIndicatorEdgeInsets.bottom);
+            } else {
+                if (self.selectionStyle == HMSegmentedControlSelectionStyleSpecifedWidthStripe) {
+                    return CGRectMake(self.segmentWidth * self.selectedSegmentIndex + (self.segmentWidth - self.selectionIndicatorSpecifedWidth)/2.0, indicatorYOffset, self.selectionIndicatorSpecifedWidth, self.selectionIndicatorHeight);
+                }
+                
+                return CGRectMake(self.segmentWidth * self.selectedSegmentIndex + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, self.segmentWidth - self.selectionIndicatorEdgeInsets.left - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight);
             }
-            
-            return CGRectMake(self.segmentWidth * self.selectedSegmentIndex + self.selectionIndicatorEdgeInsets.left, indicatorYOffset, self.segmentWidth - self.selectionIndicatorEdgeInsets.left - self.selectionIndicatorEdgeInsets.right, self.selectionIndicatorHeight);
         }
     }
 }
@@ -854,6 +866,11 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
         
         self.segmentWidthsArray = [mutableSegmentWidths copy];
     }
+    
+    if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleSpecifed &&
+        self.segmentSpecifedWidth > 0) {
+        self.segmentWidth = self.segmentSpecifedWidth;
+    }
 
     self.scrollView.scrollEnabled = self.isUserDraggable;
     self.scrollView.contentSize = CGSizeMake([self totalSegmentedControlWidth], self.frame.size.height);
@@ -893,7 +910,7 @@ NSUInteger HMSegmentedControlNoSegment = (NSUInteger)-1;
     
     if (CGRectContainsPoint(enlargeRect, touchLocation)) {
         NSUInteger segment = 0;
-        if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed) {
+        if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleFixed || self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleSpecifed) {
             segment = (touchLocation.x + self.scrollView.contentOffset.x) / self.segmentWidth;
         } else if (self.segmentWidthStyle == HMSegmentedControlSegmentWidthStyleDynamic) {
             // To know which segment the user touched, we need to loop over the widths and substract it from the x position.

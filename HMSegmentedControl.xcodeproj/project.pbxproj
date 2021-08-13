@@ -269,7 +269,7 @@
 					};
 					9C1632F11DA572BA001FB468 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = C75GEDTP26;
+						DevelopmentTeam = 9TH5FC22B7;
 						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
@@ -527,7 +527,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = C75GEDTP26;
+				DEVELOPMENT_TEAM = 9TH5FC22B7;
 				INFOPLIST_FILE = "$(SRCROOT)/HMSegmentedControlExample/HMSegmentedControlExample-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.heshammegid.HMSegmentedControlExample;
@@ -542,7 +542,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = C75GEDTP26;
+				DEVELOPMENT_TEAM = 9TH5FC22B7;
 				INFOPLIST_FILE = "$(SRCROOT)/HMSegmentedControlExample/HMSegmentedControlExample-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.heshammegid.HMSegmentedControlExample;

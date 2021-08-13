@@ -19,7 +19,8 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlSelectionStyle) {
     HMSegmentedControlSelectionStyleTextWidthStripe, // Indicator width will only be as big as the text width
     HMSegmentedControlSelectionStyleFullWidthStripe, // Indicator width will fill the whole segment
     HMSegmentedControlSelectionStyleBox, // A rectangle that covers the whole segment
-    HMSegmentedControlSelectionStyleArrow // An arrow in the middle of the segment pointing up or down depending on `HMSegmentedControlSelectionIndicatorLocation`
+    HMSegmentedControlSelectionStyleArrow, // An arrow in the middle of the segment pointing up or down depending on `HMSegmentedControlSelectionIndicatorLocation`
+    HMSegmentedControlSelectionStyleSpecifedWidthStripe // Indicator width will Specifed width
 };
 
 typedef NS_ENUM(NSInteger, HMSegmentedControlSelectionIndicatorLocation) {
@@ -33,6 +34,7 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlSelectionIndicatorLocation) {
 typedef NS_ENUM(NSInteger, HMSegmentedControlSegmentWidthStyle) {
     HMSegmentedControlSegmentWidthStyleFixed, // Segment width is fixed
     HMSegmentedControlSegmentWidthStyleDynamic, // Segment width will only be as big as the text width (including inset)
+    HMSegmentedControlSegmentWidthStyleSpecifed, // Segment width is Specifed
 };
 
 typedef NS_OPTIONS(NSInteger, HMSegmentedControlBorderType) {
@@ -114,6 +116,13 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlImagePosition) {
 @property (nonatomic, strong) UIColor *selectionIndicatorBoxColor UI_APPEARANCE_SELECTOR;
 
 /**
+ Width for the selection indicator stripe
+ 
+ Default is 100
+ */
+@property (nonatomic, assign) CGFloat selectionIndicatorSpecifedWidth UI_APPEARANCE_SELECTOR;
+
+/**
  Color for the vertical divider between segments.
  
  Default is `[UIColor blackColor]`
@@ -154,6 +163,13 @@ typedef NS_ENUM(NSInteger, HMSegmentedControlImagePosition) {
  Default is `HMSegmentedControlSegmentWidthStyleFixed`
  */
 @property (nonatomic, assign) HMSegmentedControlSegmentWidthStyle segmentWidthStyle;
+
+/**
+ Specifed Width for segment
+ 
+ Default is 0
+ */
+@property (nonatomic, assign) CGFloat segmentSpecifedWidth;
 
 /**
  Specifies the location of the selection indicator.
